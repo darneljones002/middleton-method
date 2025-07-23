@@ -1,6 +1,31 @@
 function VerticalLeap() {
-  const handlePurchase = () => {
-    window.location.href = 'https://buy.stripe.com/test_dR6cNp1qX7Kz3zW5kk'; // Replace with your Stripe checkout link
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch(
+        "https://us-central1-e-commerce-203c7.cloudfunctions.net/createCheckoutSession", // Your Firebase Function URL
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            product: "vertical", // use your internal ID
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url; // Redirect to Stripe Checkout
+      } else {
+        console.error("Stripe session failed", data);
+        alert("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Purchase error:", error);
+      alert("An error occurred during checkout.");
+    }
   };
 
   return (
@@ -10,11 +35,11 @@ function VerticalLeap() {
         Jump higher. Explode faster. Build elite lower-body strength with this progressive jump training program for serious athletes.
       </p>
       <button
-        onClick={handlePurchase}
-        className="bg-platinum text-black font-bold px-8 py-3 rounded-full shadow-lg hover:scale-105 transition"
-      >
-        Purchase & Access
+        onClick={handleCheckout}
+        className="bg-platinum text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition">
+        Buy Now – $29.99
       </button>
+
     </div>
   );
 }
