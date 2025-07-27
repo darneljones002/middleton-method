@@ -2,7 +2,7 @@ function Agility() {
   const handleCheckout = async () => {
     try {
       const response = await fetch(
-        "https://us-central1-e-commerce-203c7.cloudfunctions.net/createCheckoutSession", // Your Firebase Function URL
+        "https://createcheckoutsession-lxhget5tfq-uc.a.run.app", // Your Firebase Function URL
         {
           method: "POST",
           headers: {
